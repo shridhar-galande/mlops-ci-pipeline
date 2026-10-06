@@ -51,7 +51,7 @@ def train(n_estimators: int = 100, max_depth: int = None):
 
     # ── Load data ──────────────────────────────────────────
     data_path = CLEAN_DATA_PATH if os.path.exists(CLEAN_DATA_PATH) else FALLBACK_DATA
-    print(f"\n📂  Loading data from: {data_path}")
+    print(f"\n[Data]  Loading data from: {data_path}")
     df = pd.read_csv(data_path)
 
     # Features (X) and label (y)
@@ -71,7 +71,7 @@ def train(n_estimators: int = 100, max_depth: int = None):
 
     with mlflow.start_run() as run:
         run_id = run.info.run_id
-        print(f"\n🚀  MLflow run started  (id: {run_id[:8]}...)")
+        print(f"\n[MLflow]  Run started  (id: {run_id[:8]}...)")
 
         # ── ARTIFACT: log parameters ───────────────────────
         # Everything that affects the model output should be logged.
@@ -90,7 +90,7 @@ def train(n_estimators: int = 100, max_depth: int = None):
         mlflow.log_param("sklearn_version", sklearn.__version__)
 
         # ── Train ──────────────────────────────────────────
-        print(f"\n🌲  Training RandomForest  "
+        print(f"\n[Train]  RandomForest  "
               f"(n_estimators={n_estimators}, max_depth={max_depth})")
         model = RandomForestClassifier(
             n_estimators=n_estimators,
@@ -115,7 +115,11 @@ def train(n_estimators: int = 100, max_depth: int = None):
         # ── ARTIFACT: log the model itself ─────────────────
         # MLflow saves the model in a versioned folder.
         # You can load it later with: mlflow.sklearn.load_model(...)
-        mlflow.sklearn.log_model(model, artifact_path="model")
+        mlflow.sklearn.log_model(
+            model,
+            artifact_path="model",
+            skops_trusted_types=["sklearn.tree._tree.Tree"],
+        )
 
         # ── ARTIFACT: save metrics to a JSON file too ──────
         # This is what evaluate.py will read to compare runs.
@@ -131,13 +135,13 @@ def train(n_estimators: int = 100, max_depth: int = None):
         mlflow.log_artifact(metrics_path)
 
         # ── Print summary ──────────────────────────────────
-        print(f"\n{'─'*45}")
+        print(f"\n{'-'*45}")
         print(f"  Accuracy     : {accuracy:.4f}  ({accuracy*100:.1f}%)")
         print(f"  MLflow run   : {run_id[:8]}...")
         print(f"  Params logged: n_estimators={n_estimators}, max_depth={max_depth}")
-        print(f"{'─'*45}")
-        print(f"\n✅  Training complete!")
-        print(f"    Run:  mlflow ui   →   http://localhost:5000")
+        print(f"{'-'*45}")
+        print(f"\n[OK]  Training complete!")
+        print(f"    Run:  mlflow ui   ->   http://localhost:5000")
         print(f"    Look for experiment: '{MLFLOW_EXPERIMENT}'\n")
 
         return accuracy, run_id

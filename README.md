@@ -90,6 +90,10 @@ mlflow ui
 mlflow ui --backend-store-uri sqlite:///mlflow.db
 ```
 
+```bash
+mlflow ui --backend-store-uri sqlite:///mlflow.db --port 5001
+```
+
 Open http://localhost:5000 in your browser.
 You'll see every run with its parameters, metrics, and saved model.
 
@@ -98,6 +102,9 @@ You'll see every run with its parameters, metrics, and saved model.
 - **Run detail** — accuracy, F1, seed, dataset, pipeline version
 - **Artifacts tab** — model files, scaler, confusion matrix plot
 - **Models tab** — `iris-classifier` v1 with `champion` alias
+
+For tracking, model logging, registry, serving, and troubleshooting commands,
+see the [MLflow Cheat Sheet](./MLFLOW_CHEATSHEET.md).
 
 
 ---

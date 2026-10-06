@@ -28,6 +28,7 @@ Thumbs.db
 # MLflow artifacts and temporary files
 mlruns/
 models/
+mlflow.db
 
 # Ignore local data files if you prefer
 # data/*.csv
