@@ -235,7 +235,7 @@ docker pull $image
 Start the model server in this PowerShell terminal:
 
 ```powershell
-docker run --rm --name iris-mlflow -p 5001:5000 $image
+docker run --rm --name iris-mlflow -p 5001:5000 ghcr.io/shridhar-galande/mlops-ci-pipeline:latest
 ```
 
 Wait until the container reports that the MLflow server is listening. Keep
@@ -243,12 +243,7 @@ this terminal open. In a **second** PowerShell terminal, send one Iris sample
 to the model:
 
 ```powershell
-$body = @{
-    dataframe_split = @{
-        columns = @("sepal_length", "sepal_width", "petal_length", "petal_width")
-        data = @(@(5.1, 3.5, 1.4, 0.2))
-    }
-} | ConvertTo-Json -Depth 5 -Compress
+$body = '{"dataframe_split":{"columns":["sepal_length","sepal_width","petal_length","petal_width"],"data":[[5.1,3.5,1.4,0.2]]}}'
 
 $result = Invoke-RestMethod `
     -Method Post `
@@ -287,3 +282,6 @@ removes the stopped container; the pulled image remains available locally.
 No GitHub deployment environment or hosted server is required for this local
 run. A GitHub Environment is only needed later if you want deployment approvals,
 environment-specific secrets, or an automated deployment target.
+
+---
+
