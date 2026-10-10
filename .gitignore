@@ -30,6 +30,7 @@ Thumbs.db
 mlruns/
 models/
 mlflow.db
+src/__pycache__/
 
 # Ignore local data files if you prefer
 # data/*.csv
